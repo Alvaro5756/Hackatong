@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprobación de API REST</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comprobación de la API REST</h1>
+    <button id="fetchData">Cargar Datos</button>
+    <h2>Datos:</h2>
+    <pre id="dataDisplay"></pre>
+
+    <script>
+        document.getElementById('fetchData').addEventListener('click', () => {
+            fetch('https://g1573d51ff99280-ziog604abobz9lyd.adb.eu-madrid-1.oraclecloudapps.com/ords/caja/metadata-catalog/')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la red: ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('dataDisplay').textContent = JSON.stringify(data, null, 2);
+    })
+    .catch(error => {
+        console.error('Error en la solicitud:', error);
+        document.getElementById('dataDisplay').textContent = 'Error: ' + error.message;
+    });
+        });
+    </script>
+</body>
+</html>
