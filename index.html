@@ -19,13 +19,15 @@
             overflow-x: auto;
         }
     </style>
+       <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <h1>Comprobación de la API REST</h1>
     <button id="fetchData">Cargar Datos</button>
     <h2>Datos:</h2>
     <pre id="dataDisplay"></pre>
-
+    <div class="g-recaptcha" data-sitekey="6LdZRGQqAAAAALI-
+OsrFosn5jbdqyVeIsE1LWuKE"></div>
     <script>
         document.getElementById('fetchData').addEventListener('click', () => {
             const username = 'CAJA'; // reemplaza con tu usuario
