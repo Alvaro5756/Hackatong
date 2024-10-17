@@ -28,20 +28,28 @@
 
     <script>
         document.getElementById('fetchData').addEventListener('click', () => {
-            fetch('https://g1573d51ff99280-ziog604abobz9lyd.adb.eu-madrid-1.oraclecloudapps.com/ords/caja/metadata-catalog/')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Error en la red: ' + response.status);
-        }
-        return response.json();
-    })
-    .then(data => {
-        document.getElementById('dataDisplay').textContent = JSON.stringify(data, null, 2);
-    })
-    .catch(error => {
-        console.error('Error en la solicitud:', error);
-        document.getElementById('dataDisplay').textContent = 'Error: ' + error.message;
-    });
+            const username = 'CAJA'; // reemplaza con tu usuario
+            const password = 'MEREngue!!!c4j0n3r0_'; // reemplaza con tu contraseña
+            const headers = new Headers();
+            headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
+
+            fetch('https://g1573d51ff99280-ziog604abobz9lyd.adb.eu-madrid-1.oraclecloudapps.com/ords/caja/metadata-catalog/', {
+                method: 'GET',
+                headers: headers
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la red: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                document.getElementById('dataDisplay').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('Error en la solicitud:', error);
+                document.getElementById('dataDisplay').textContent = 'Error: ' + error.message;
+            });
         });
     </script>
 </body>
