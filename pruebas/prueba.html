@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del API</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos del API</h1>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Embalse</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Demarcación</th>
+                <th>Cauce</th>
+                <th>Provincia</th>
+                <th>CCAA</th>
+                <th>Tipo</th>
+                <th>Informe</th>
+                <th>Enlace</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+        </tbody>
+    </table>
+
+    <script>
+        const apiUrl = 'https://cors-anywhere.herokuapp.com/https://g1573d51ff99280-ziog604abobz9lyd.adb.eu-madrid-1.oraclecloudapps.com/ords/caja/listadoutf8/';
+
+        fetch(apiUrl)
+            .then(response => {
+                // Comprobar si la respuesta es exitosa
+                if (!response.ok) {
+                    throw new Error('Error en la respuesta del API');
+                }
+                // Retornar el cuerpo de la respuesta en formato JSON
+                return response.json();
+            })
+            .then(data => {
+                console.log(data); // Aquí tienes los datos en formato JSON
+                // Procesar los datos como necesites
+            })
+            .catch(error => {
+                console.error('Hubo un problema con la solicitud Fetch:', error);
+            });
+        
+            
+    /*        .then(data => {
+                const tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+
+                // Ajustar según la estructura de tu API
+                const items = data.items || data; // Si los datos están directamente en el objeto, usa data.
+
+                items.forEach(item => {
+                    const row = tableBody.insertRow();
+                    row.insertCell(0).innerText = item.codigo; // Código
+                    row.insertCell(1).innerText = item.nombre; // Nombre
+                    row.insertCell(2).innerText = item.embalse; // Embalse
+                    row.insertCell(3).innerText = item.x; // Coordenada X
+                    row.insertCell(4).innerText = item.y; // Coordenada Y
+                    row.insertCell(5).innerText = item.demarc; // Demarcación
+                    row.insertCell(6).innerText = item.cauce; // Cauce
+                    row.insertCell(7).innerText = item.provincia; // Provincia
+                    row.insertCell(8).innerText = item.ccaa; // CCAA
+                    row.insertCell(9).innerText = item.tipo; // Tipo
+                    const informeCell = row.insertCell(10);
+                    informeCell.innerHTML = `<a href="${item.informe}" target="_blank">Ver Informe</a>`; // Informe
+                    const enlaceCell = row.insertCell(11);
+                    enlaceCell.innerHTML = `<a href="${item.links[0].href}" target="_blank">Enlace</a>`; // Enlace
+
+                });
+            });
+            
+             //   .catch(error => console.error('Error:', error));
+                
+            .catch(error => {
+                console.error('Hubo un problema con la solicitud Fetch:', error);
+            });
+            */
+    </script>
+</body>
+</html>

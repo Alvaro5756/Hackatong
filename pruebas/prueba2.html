@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabla de Base de Datos</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>Datos de la Base de Datos</h1>
+    <div id="miTabla"></div> <!-- Aquí se insertará la tabla -->
+    
+    <script>
+        // Hacer la solicitud a la API
+        fetch('https://g1573d51ff99280-ziog604abobz9lyd.adb.eu-madrid-1.oraclecloudapps.com/ords/caja/listadoutf8/')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Error en la red');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Llamar a la función que genera la tabla
+                generarTabla(data.items); // Ajusta según la estructura del JSON
+            })
+            .catch(error => console.error('Error:', error));
+
+        // Función para generar la tabla HTML
+        function generarTabla(data) {
+            let tabla = '<table><thead><tr>';
+
+            // Obtener los encabezados
+            if (data.length > 0) {
+                Object.keys(data[0]).forEach(key => {
+                    tabla += `<th>${key}</th>`;
+                });
+                tabla += '</tr></thead><tbody>';
+
+                // Llenar la tabla con datos
+                data.forEach(item => {
+                    tabla += '<tr>';
+                    Object.values(item).forEach(value => {
+                        tabla += `<td>${value}</td>`;
+                    });
+                    tabla += '</tr>';
+                });
+            } else {
+                tabla = '<tr><td colspan="100%">No hay datos disponibles.</td></tr>';
+            }
+
+            tabla += '</tbody></table>';
+
+            // Insertar la tabla en el HTML
+            document.getElementById('miTabla').innerHTML = tabla;
+        }
+    </script>
+</body>
+</html>
