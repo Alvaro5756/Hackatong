@@ -12,6 +12,19 @@
             background-color: #f9f9f9;
             border-radius: 5px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
         pre {
             background-color: #eee;
             padding: 10px;
@@ -19,15 +32,30 @@
             overflow-x: auto;
         }
     </style>
-       <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <h1>Comprobación de la API REST</h1>
     <button id="fetchData">Cargar Datos</button>
     <h2>Datos:</h2>
-    <pre id="dataDisplay"></pre>
-    <div class="g-recaptcha" data-sitekey="6LdZRGQqAAAAALI-
-OsrFosn5jbdqyVeIsE1LWuKE"></div>
+    <table id="dataTable" style="display:none;">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Embalse</th>
+                <th>X</th>
+                <th>Y</th>
+                <th>Demarcación</th>
+                <th>Cauce</th>
+                <th>Provincia</th>
+                <th>CCAA</th>
+                <th>Tipo</th>
+                <th>Informe</th>
+            </tr>
+        </thead>
+        <tbody id="dataDisplay"></tbody>
+    </table>
+
     <script>
         document.getElementById('fetchData').addEventListener('click', () => {
             const username = 'CAJA'; // reemplaza con tu usuario
@@ -35,7 +63,7 @@ OsrFosn5jbdqyVeIsE1LWuKE"></div>
             const headers = new Headers();
             headers.append('Authorization', 'Basic ' + btoa(username + ':' + password));
 
-            fetch('https://g1573d51ff99280-ziog604abobz9lyd.adb.eu-madrid-1.oraclecloudapps.com/ords/caja/metadata-catalog/', {
+            fetch('https://g1573d51ff99280-ziog604abobz9lyd.adb.eu-madrid-1.oraclecloudapps.com/ords/caja/listadoutf8/', {
                 method: 'GET',
                 headers: headers
             })
@@ -46,11 +74,37 @@ OsrFosn5jbdqyVeIsE1LWuKE"></div>
                 return response.json();
             })
             .then(data => {
-                document.getElementById('dataDisplay').textContent = JSON.stringify(data, null, 2);
+                // Limpiar el contenido previo
+                const tbody = document.getElementById('dataDisplay');
+                tbody.innerHTML = '';
+
+                // Procesar y mostrar los datos en la tabla
+                data.items.forEach(item => { // Suponiendo que los datos vienen en un array llamado "items"
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${item.codigo}</td>
+                        <td>${item.nombre}</td>
+                        <td>${item.embalse}</td>
+                        <td>${item.x}</td>
+                        <td>${item.y}</td>
+                        <td>${item.demarc}</td>
+                        <td>${item.cauce}</td>
+                        <td>${item.provincia}</td>
+                        <td>${item.ccaa}</td>
+                        <td>${item.tipo}</td>
+                        <td><a href="${item.informe}" target="_blank">Ver Informe</a></td>
+                    `;
+                    tbody.appendChild(row);
+                });
+
+                // Mostrar la tabla
+                document.getElementById('dataTable').style.display = 'table';
             })
             .catch(error => {
                 console.error('Error en la solicitud:', error);
-                document.getElementById('dataDisplay').textContent = 'Error: ' + error.message;
+                const tbody = document.getElementById('dataDisplay');
+                tbody.innerHTML = '<tr><td colspan="11">Error: ' + error.message + '</td></tr>';
+                document.getElementById('dataTable').style.display = 'table';
             });
         });
     </script>
